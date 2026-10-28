@@ -1,6 +1,6 @@
 # OpenFin8:CA - README
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/OpenFin8/openfin8-ca/blob/main/LICENSE)
 [![Built with Rust](https://img.shields.io/badge/Built%20with%20Rust-orange.svg)](https://www.rust-lang.org/)
 [![Docs](https://img.shields.io/badge/docs/read-3aa757.svg)](https://bank8.dev/docs/services/open-ca)
 [![Website](https://img.shields.io/badge/website-bank8.dev-1a73e8.svg)](https://bank8.dev)
@@ -27,12 +27,12 @@ server (DCR, RFC 7591), and each institution keeps its own consent
 records - the bank its grant ledger, the fintech its connection
 registry (the two-ledger model).
 
-The service embeds [`openfin8-core`](../openfin8-core) - the
+The service embeds [`openfin8-core`](https://github.com/OpenFin8/openfin8-core) - the
 jurisdiction-agnostic kernel (OBARCH-1) - and supplies the Canadian
 FDX/CDX profile over the shared FDX wire (`core::wire::fdx`) and
 the FDX ceremony (DCR + PAR + PKCE + DPoP), with its own version
 cadence and enablement. The US and UK adapters
-([`bank8-open-us`](../bank8-open-us), [`bank8-open-uk`](../bank8-open-uk))
+([`bank8-open-us`](https://github.com/OpenFin8/openfin8-us), [`bank8-open-uk`](https://github.com/OpenFin8/openfin8-uk))
 follow the same contract.
 
 ## Motivation
@@ -51,7 +51,7 @@ this repository never publishes it. The published
 `docs/openapi.json` carries bank8-owned routes only, enforced by a
 CI drift guard; customers supply their licensed FDX specification
 under gitignored `specs/fdx/{version}/` (see
-[`specs/README.md`](specs/README.md)).
+[`specs/README.md`](https://github.com/OpenFin8/openfin8-ca/blob/main/specs/README.md)).
 
 ## Architecture & High-Level Design
 
@@ -75,7 +75,7 @@ graph TD
     WIRE -- "initiation" --> PAY
 ```
 
-Read [`DESIGN.md`](DESIGN.md) (OBARCH-3) for the full design: the
+Read [`DESIGN.md`](https://github.com/OpenFin8/openfin8-ca/blob/main/DESIGN.md) (OBARCH-3) for the full design: the
 rename inventory from bank8-fdx, the version-configurable route
 contract, and the spec-publication policy.
 
@@ -100,8 +100,8 @@ make enroll   # register this repo (composable enrollment, RS §6)
 
 ## Contributing & License
 
-Apache-2.0 (see [LICENSE](LICENSE), [NOTICE](NOTICE)). The security
-model is platform-wide - read [SECURITY.md](SECURITY.md).
+Apache-2.0 (see [LICENSE](https://github.com/OpenFin8/openfin8-ca/blob/main/LICENSE), [NOTICE](https://github.com/OpenFin8/openfin8-ca/blob/main/NOTICE)). The security
+model is platform-wide - read [SECURITY.md](https://github.com/OpenFin8/openfin8-ca/blob/main/SECURITY.md).
 
 ---
 
