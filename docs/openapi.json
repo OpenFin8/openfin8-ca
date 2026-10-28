@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "openfin8-ca",
-    "description": "Sentin8 OpenFin8:CA - CA open-banking data provider (FDX v6.x wire): consent-checked data sharing, the in-place successor of bank8-fdx.",
+    "description": "Sentin8 OpenFin8:CA - Canadian open banking (FDX v6.x): consent-checked data sharing. The FDX API specification is licensed by FDX and is not published; customers supply it under specs/fdx/{version}/ (see specs/README.md).",
     "license": {
       "name": "MIT OR Apache-2.0",
       "identifier": "MIT OR Apache-2.0"
