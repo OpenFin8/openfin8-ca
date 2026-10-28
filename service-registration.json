@@ -1,11 +1,11 @@
 {
-  "vertical": "bank8",
+  "vertical": "openfin8",
   "services": [
     {
-      "service_type": "bank8:open-ca",
+      "service_type": "openfin8:ca",
       "telemetry_property": {
-        "slug": "open-ca",
-        "name": "Bank8:OpenCA Telemetry"
+        "slug": "openfin8-ca",
+        "name": "OpenFin8:CA Telemetry"
       }
     }
   ]

@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: Copyright Logically Magic Inc. <hello@logicallymagic.com>
 // SPDX-FileCopyrightText: Copyright Hamid Jahanzad <Hamid@Jahanzad.com>
-// SPDX-FileCopyrightText: Copyright Contributors to the Bank8:OpenCA
+// SPDX-FileCopyrightText: Copyright Contributors to the OpenFin8:CA
 // SPDX-License-Identifier: Apache-2.0
 
-//! Service self-registration data for Bank8:OpenCA.
+//! Service self-registration data for OpenFin8:CA.
 //! Output via `--print-registration` flag. See `sentin8/design/sentin8-service-self-registration-design.md`.
 
 use sentin8::registration::{
@@ -13,12 +13,12 @@ use sentin8::registration::{
 use utoipa::OpenApi;
 
 const PG_ROLES: &[PgRole] = &[PgRole {
-    scope: "bank8:open-ca:read,bank8:open-ca:write",
-    role: "bank8_fdx_service",
+    scope: "openfin8:ca:read,openfin8:ca:write",
+    role: "openfin8_ca_service",
     bypass_rls: false,
-    // Grants live in the bank8 vertical database only (DBX §6.6
+    // Grants live in the openfin8 vertical database only (DBX §6.6
     // database-per-vertical, schema-per-service).
-    database: "bank8",
+    database: "openfin8",
     // FDX owns all its reads - no cross-schema grants.
     cross_schema_grants: &[],
 }];
@@ -28,11 +28,11 @@ const PG_ROLES: &[PgRole] = &[PgRole {
 /// `certless:<workload>` rows into `sentin8.auth_m2m_scope_grants`. Scopes
 /// use the full vocabulary form (bare forms + missing grants fail-closed
 /// every bus/policy/stat DCR).
-/// - `bank8:open-ca` - the service's own client (fdx/src/server.rs): bus
+/// - `openfin8:ca` - the service's own client (fdx/src/server.rs): bus
 ///
 /// produce/consume (env-init `sentin8:sys:service:updated` consumer +
 /// notifications).
-/// - `bank8:open-ca-policy` - Shield hot-reload consumer
+/// - `openfin8:ca-policy` - Shield hot-reload consumer
 ///
 /// (policy_bus_client, full colon identity).
 /// - `fdx-policy` - Shield stat emitter (stat_emit short form).
@@ -41,7 +41,7 @@ const PG_ROLES: &[PgRole] = &[PgRole {
 /// §6.8; boot step 8c).
 const M2M_GRANTS: &[M2mGrant] = &[
     M2mGrant {
-        workload: "bank8:open-ca",
+        workload: "openfin8:ca",
         scopes: &[
             "sentin8:bus:produce",
             "sentin8:bus:consume",
@@ -54,7 +54,7 @@ const M2M_GRANTS: &[M2mGrant] = &[
     // stat client), not the colon identity. Grant BOTH spellings; the
     // gate looks up the exact client_name.
     M2mGrant {
-        workload: "open-ca",
+        workload: "openfin8-ca",
         scopes: &[
             "sentin8:bus:produce",
             "sentin8:bus:consume",
@@ -68,7 +68,7 @@ const M2M_GRANTS: &[M2mGrant] = &[
         scopes: &["sentin8:sys:audit:write"],
     },
     M2mGrant {
-        workload: "bank8:open-ca-policy",
+        workload: "openfin8:ca-policy",
         scopes: &["sentin8:bus:consume", "sentin8:stat:measure"],
     },
     M2mGrant {
@@ -79,7 +79,7 @@ const M2M_GRANTS: &[M2mGrant] = &[
     // plane-contract.md §VDC.5): the env-init consumer fetches tenant
     // identity (`GET /v1/tenants/{env_id}`) for issuer/callback derivation.
     M2mGrant {
-        workload: "bank8-open-ca-sys",
+        workload: "openfin8-ca-sys",
         scopes: &["sentin8:sys:tenants:read"],
     },
     // CERTFREE-8V: the fdx→ledger proxy workload - the account-detail,
@@ -87,13 +87,13 @@ const M2M_GRANTS: &[M2mGrant] = &[
     // static BANK8_LEDGER_TOKEN dev convention is retired; the ledger
     // side's scope-mirror policy set admits these scopes).
     M2mGrant {
-        workload: "bank8-open-ca-ledger",
+        workload: "openfin8-ca-ledger",
         scopes: &["bank8:ledger:accounts:read", "bank8:ledger:postings:read"],
     },
     // CERTFREE-8V: the fdx→payments proxy workload - transfers and
     // payment creation through the payments public API.
     M2mGrant {
-        workload: "bank8-open-ca-payments",
+        workload: "openfin8-ca-payments",
         scopes: &[
             "bank8:payments:payments:read",
             "bank8:payments:payments:write",
@@ -103,44 +103,44 @@ const M2M_GRANTS: &[M2mGrant] = &[
     // the database-free HostContextResolver’s resolve workload - cache
     // miss calls Sys `GET /v1/resolve/hostname`.
     M2mGrant {
-        workload: "bank8-open-ca-tls",
+        workload: "openfin8-ca-tls",
         scopes: &["sentin8:sys:instances:read"],
     },
 ];
 
 const ADMIN_SCOPES: &[AdminScope] = &[
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:consents:write",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:consents:write",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:consents:read",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:consents:read",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:recipient:read",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:recipient:read",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:recipient:write",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:recipient:write",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:provider:write",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:provider:write",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:provider:read",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:provider:read",
     },
     // Policy-admin surface (policy design §3.6; principles §6.0b per-service scope).
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:policy:read",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:policy:read",
     },
     AdminScope::Typed {
-        role: "bank8:open-ca:admin",
-        scope: "bank8:open-ca:policy:write",
+        role: "openfin8:ca:admin",
+        scope: "openfin8:ca:policy:write",
     },
 ];
 
@@ -239,11 +239,11 @@ const ADMIN_UI_PAGES: &[AdminUiPage] = &[
 /// gate; shadow is the emergency one-UPDATE rollback lever only.
 /// The Shield text of the declared scope-mirror set - public so the
 /// policy wiring tests assert against the REAL seed.
-pub const SCOPE_MIRROR_POLICIES: &str = "permit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"bank8:open-ca:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"bank8:open-ca:consents:read\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"bank8:open-ca:provider:read\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"bank8:open-ca:recipient:read\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:write\", resource) when { principal.scopes.contains(\"bank8:open-ca:consents:write\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:provider:write\", resource) when { principal.scopes.contains(\"bank8:open-ca:provider:write\") };\npermit(principal, action == Action::\"bank8:open-ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:read\", resource) when { principal.scopes.contains(\"bank8:open-ca:recipient:read\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:write\", resource) when { principal.scopes.contains(\"bank8:open-ca:recipient:write\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"bank8:open-ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };";
+pub const SCOPE_MIRROR_POLICIES: &str = "permit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"openfin8:ca:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"openfin8:ca:consents:read\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"openfin8:ca:provider:read\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"openfin8:ca:recipient:read\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:read\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:write\", resource) when { principal.scopes.contains(\"openfin8:ca:consents:write\") };\npermit(principal, action == Action::\"openfin8:ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"openfin8:ca:consents:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"openfin8:ca:provider:write\", resource) when { principal.scopes.contains(\"openfin8:ca:provider:write\") };\npermit(principal, action == Action::\"openfin8:ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"openfin8:ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"openfin8:ca:provider:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:read\", resource) when { principal.scopes.contains(\"openfin8:ca:recipient:read\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:read\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:write\", resource) when { principal.scopes.contains(\"openfin8:ca:recipient:write\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:org:admin\") };\npermit(principal, action == Action::\"openfin8:ca:recipient:write\", resource) when { principal.scopes.contains(\"sentin8:sys:env:admin\") };";
 
 const POLICIES: &[PolicySetDecl] = &[PolicySetDecl {
     policy_set_name: "scope-mirror",
-    description: "Action-granular scope permits for bank8:open-ca over the LIVE effective scope set (design §3.1d). Step 5 is the only gate.",
+    description: "Action-granular scope permits for openfin8:ca over the LIVE effective scope set (design §3.1d). Step 5 is the only gate.",
     // Shield text lives in SCOPE_MIRROR_POLICIES (single source).
     policies: SCOPE_MIRROR_POLICIES,
     schema: None,
@@ -283,11 +283,11 @@ const AUDIT_FINDINGS: &[AuditFinding] = &[
 
 const SERVICE_ACTIONS: &[ServiceActionEntry] = &[ServiceActionEntry {
     action: "fdx_consent_start",
-    service_type: "bank8:open-ca",
-    platform_domain_key: "bank8:open-ca",
+    service_type: "openfin8:ca",
+    platform_domain_key: "openfin8:ca",
     method: "POST",
     endpoint: "/v1/recipient/consents/start",
-    scope: "bank8:open-ca:recipient:write",
+    scope: "openfin8:ca:recipient:write",
 }];
 
 /// Consent data provider consumed by Sentin8:Auth's accounts proxy
@@ -295,12 +295,12 @@ const SERVICE_ACTIONS: &[ServiceActionEntry] = &[ServiceActionEntry {
 /// Field order matches the enroll INSERT contract (cli §vertical_registry).
 fn consent_providers_json() -> Vec<serde_json::Value> {
     vec![serde_json::json!({
-        "feature": "open-ca",
+        "feature": "openfin8-ca",
         "data_type": "accounts",
-        "service_type": "bank8:open-ca",
-        "platform_domain_key": "bank8:open-ca",
+        "service_type": "openfin8:ca",
+        "platform_domain_key": "openfin8:ca",
         "endpoint": "/v1/auth/consent/accounts",
-        "scope": "bank8:open-ca:consents:read",
+        "scope": "openfin8:ca:consents:read",
         "response_key": "accounts"
     })]
 }
@@ -309,8 +309,8 @@ fn consent_providers_json() -> Vec<serde_json::Value> {
 fn consent_flows_json() -> Vec<serde_json::Value> {
     vec![serde_json::json!({
         "id": "fdx_data_sharing",
-        "trigger_patterns": ["bank8:open-ca:recipient:*"],
-        "service_type": "bank8:open-ca",
+        "trigger_patterns": ["openfin8:ca:recipient:*"],
+        "service_type": "openfin8:ca",
         "ui_endpoint": "/v1/auth/consent/ui",
         "approve_endpoint": "/v1/auth/consent/approve",
         "deny_endpoint": "/v1/auth/consent/deny"
@@ -330,8 +330,8 @@ pub fn print(section: Option<String>) -> anyhow::Result<()> {
     let consent_flows: &'static [serde_json::Value] =
         Box::leak(consent_flows_json().into_boxed_slice());
     let reg = Registration {
-        service_type: "bank8:open-ca",
-        subdomain: "bank8-open-ca",
+        service_type: "openfin8:ca",
+        subdomain: "openfin8-ca",
         health_path: "/v1/health",
         admin_scopes: ADMIN_SCOPES,
         error_codes: ERROR_CODES,
@@ -344,7 +344,7 @@ pub fn print(section: Option<String>) -> anyhow::Result<()> {
         admin_ui: Some(AdminUi {
             label: "OpenCA",
             icon: "0xf06be",
-            service_flag: "open-ca",
+            service_flag: "openfin8-ca",
             pages: ADMIN_UI_PAGES,
         }),
         sql_migrations: vec![

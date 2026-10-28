@@ -1,4 +1,4 @@
-# Bank8:OpenCA - Customer-Supplied Standard Specifications
+# OpenFin8:CA - Customer-Supplied Standard Specifications
 
 **The FDX API specification is never committed to this repository.**
 
@@ -12,7 +12,7 @@ API Certification Use Cases will render implementations using
 those modifications non-conformant with the FDX API Certification
 Use Cases.
 
-Bank8:OpenCA *implements* the FDX provider surface, but it does not
+OpenFin8:CA *implements* the FDX provider surface, but it does not
 *publish* the specification. What this repository ships:
 
 - `docs/openapi.json` - the bank8-owned surfaces only
@@ -22,7 +22,7 @@ Bank8:OpenCA *implements* the FDX provider surface, but it does not
   `/fdx/` path or FDX-derived schema ever appears in it.
 - This service's behavior - the route tables, validation, and
   handler contracts - configured per environment via
-  `BANK8_OPEN_CA_VERSION`.
+  `OPENFIN8_CA_VERSION`.
 
 ## Operators: supplying the specification
 

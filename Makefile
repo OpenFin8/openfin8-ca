@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: Copyright Logically Magic Inc. <hello@logicallymagic.com>
 # SPDX-FileCopyrightText: Copyright Hamid Jahanzad <Hamid@Jahanzad.com>
-# SPDX-FileCopyrightText: Copyright Contributors to the Bank8:OpenCA
+# SPDX-FileCopyrightText: Copyright Contributors to the OpenFin8:CA
 # SPDX-License-Identifier: Apache-2.0
 
-# Makefile — bank8-open-ca (service repo, RS §4.5)
+# Makefile — openfin8-ca (service repo, RS §4.5)
 #
 # Self-contained dev controls for THIS service. Sources the root .env for
 # fleet env, guarantees the dev infra, and uses an ABSOLUTE
@@ -12,11 +12,11 @@ SHELL := /bin/bash
 CARGO ?= cargo
 
 # This service's identity (from service-registration.json — RS-8).
-SERVICE_TYPES := bank8:open-ca
+SERVICE_TYPES := openfin8:ca
 # Trimmed-boot pin (RS §4.5.1-4): this service + acme — the ONE boot-relevant
 # cross-service peer (TLS certs). Everything else fails open (RS §5.1); acme
 # itself pins only itself — it is tier 1 and needs nothing.
-BOOT_PIN := sentin8:acme,bank8:open-ca
+BOOT_PIN := sentin8:acme,openfin8:ca
 
 # Cargo profile flag: empty = dev/debug (default), --release = release.
 RELEASE ?=
@@ -101,7 +101,7 @@ endef
 	$(PROFILED:%=%-release) $(PROFILED:%=%-debug)
 
 help: ## Show this help
-	@echo "bank8-open-ca (service: bank8:open-ca)"
+	@echo "openfin8-ca (service: openfin8:ca)"
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 
 build: ## cargo build (dev profile; RELEASE=--release for release)
@@ -126,8 +126,8 @@ start: ## Start THIS service: infra + trimmed boot if captain is down; idempoten
 	$(call run_dir_fix); \
 	$(call infra_check); \
 	if $(CLI_RUN) captain services --no-infra >/dev/null 2>&1; then \
-		echo "→ captain running — starting bank8:open-ca via API (idempotent)"; \
-		$(CLI_RUN) captain start bank8:open-ca; \
+		echo "→ captain running — starting openfin8:ca via API (idempotent)"; \
+		$(CLI_RUN) captain start openfin8:ca; \
 	else \
 		echo "→ captain down — trimmed boot: $(BOOT_PIN)"; \
 		export SENTIN8_SERVICES="$(BOOT_PIN)"; \
@@ -136,7 +136,7 @@ start: ## Start THIS service: infra + trimmed boot if captain is down; idempoten
 
 stop: ## Stop THIS service's instance(s); captain + rest of the fleet stay up
 	@$(resolve_keys); \
-	if [ -z "$$keys" ]; then echo "(bank8:open-ca): not running"; exit 0; fi; \
+	if [ -z "$$keys" ]; then echo "(openfin8:ca): not running"; exit 0; fi; \
 	for k in $$keys; do \
 		echo "→ stopping $$k"; \
 		$(CLI_RUN) captain stop-instance "$$k" || exit 1; \
@@ -146,13 +146,13 @@ restart: stop start ## stop + start THIS service only
 
 upgrade: build ## Rolling-upgrade THIS service to the locally built binary
 	@$(resolve_keys); \
-	if [ -z "$$keys" ]; then echo "ERROR: bank8:open-ca has no running instance — make start first" >&2; exit 1; fi; \
+	if [ -z "$$keys" ]; then echo "ERROR: openfin8:ca has no running instance — make start first" >&2; exit 1; fi; \
 	echo "→ upgrading keys: $$keys"; \
 	$(CLI_RUN) captain upgrade-instance $$keys
 
-key: ## Print this service's live instance key(s) (bank8:open-ca/ip:port)
+key: ## Print this service's live instance key(s) (openfin8:ca/ip:port)
 	@$(resolve_keys); \
-	if [ -z "$$keys" ]; then echo "(bank8:open-ca): no running instance" >&2; exit 1; fi; \
+	if [ -z "$$keys" ]; then echo "(openfin8:ca): no running instance" >&2; exit 1; fi; \
 	echo "$$keys" | tr ' ' '\n'
 
 status: ## Fleet rows for THIS service type

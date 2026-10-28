@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: Copyright Logically Magic Inc. <hello@logicallymagic.com>
 // SPDX-FileCopyrightText: Copyright Hamid Jahanzad <Hamid@Jahanzad.com>
-// SPDX-FileCopyrightText: Copyright Contributors to the Bank8:OpenCA
+// SPDX-FileCopyrightText: Copyright Contributors to the OpenFin8:CA
 // SPDX-License-Identifier: Apache-2.0
 
-//! Library target for the bank8-open-ca adapter: the registration and
+//! Library target for the openfin8-ca adapter: the registration and
 //! spec modules for the Canadian profile. The implementation itself
-//! lives in `bank8-open-core` (shared with bank8-open-us - OBARCH-4);
+//! lives in `openfin8-core` (shared with openfin8-us - OBARCH-4);
 //! integration tests run from the core crate.
 
 pub mod openapi;

@@ -1,4 +1,4 @@
-# bank8-open-ca - Detailed Design Document
+# openfin8-ca - Detailed Design Document
 
 > Status: **PROPOSED** - the open-banking data provider for Canada
 > (OBARCH-4). Canada's consumer-driven banking framework (Department
@@ -6,16 +6,16 @@
 > implementation) rides the **FDX API profile** - the same wire family
 > as the US service. This document defines the Canadian profile as a
 > thin variant of `bank8-open-us`, not a fork. Depends on:
-> `bank8-open-core` (OBARCH-1). Read `bank8-open-us.DESIGN.md` first -
+> `openfin8-core` (OBARCH-1). Read `bank8-open-us.DESIGN.md` first -
 > this document defines only the deltas.
 
 ## 1. Scope & Context
 
 **What this service is.** The Canadian open-banking data provider
-(`service_type: bank8:open-ca`, binary `bank8-open-ca`): the FDX
+(`service_type: openfin8:ca`, binary `openfin8-ca`): the FDX
 wire surface for Canadian banks - consent-checked data sharing over
 `/fdx/v{major}/*` with the Canadian profile's versions, cluster
-vocabulary, and regulatory framing. It embeds `bank8-open-core` with
+vocabulary, and regulatory framing. It embeds `openfin8-core` with
 a Canadian profile descriptor; the wire handlers are the **FDX
 handlers shared with `bank8-open-us`** via the core crate's FDX wire
 module (the first and only place where two adapters share a wire
@@ -27,10 +27,10 @@ reasons, even though the wire is identical:
 1. **Independent version cadence** - Canada's FDX profile version
    may diverge from the US's (Canadian banks certify against
    Canadian profile releases on their own schedule;
-   `BANK8_OPEN_CA_VERSION` is independent of
+   `OPENFIN8_CA_VERSION` is independent of
    `BANK8_OPEN_US_VERSION`).
 2. **Independent enablement** - a bank running both markets enables
-   `bank8:open-us` and `bank8:open-ca` independently per
+   `bank8:open-us` and `openfin8:ca` independently per
    environment through `sys.services` (the platform mechanism,
    OBARCH-1 §6); one binary with a runtime flag would couple
    upgrades and blast radius.
@@ -45,7 +45,7 @@ reasons, even though the wire is identical:
 
 | Layer | Ownership |
 |---|---|
-| Core ledger/registry/CSDF/notify/admin | `bank8-open-core` (shared by all) |
+| Core ledger/registry/CSDF/notify/admin | `openfin8-core` (shared by all) |
 | FDX wire handlers, DTOs, route contract table | **core::wire::fdx** - shared module used by both US and CA adapters |
 | FDX ceremony (DCR+PAR+PKCE+DPoP) | core::ceremony::fdx - shared |
 | Profile descriptor, version, cluster vocabulary deltas, registration data, admin settings, spec publication policy | **per adapter** |
@@ -58,12 +58,12 @@ of the FDX surface - no fork risk between the two markets.
 
 ```mermaid
 graph TD
-    subgraph core["bank8-open-core"]
+    subgraph core["openfin8-core"]
         KERNEL["consent/recipient/csdf/notify/admin<br/>(jurisdiction-agnostic)"]
         FDXW["wire::fdx<br/>(FDX handlers + route contract + ceremony)"]
     end
     US["bank8-open-us<br/>UsProfile(FDX, v6.x)"]
-    CA["bank8-open-ca<br/>CaProfile(FDX, v6.x)"]
+    CA["openfin8-ca<br/>CaProfile(FDX, v6.x)"]
     US -->|"uses"| FDXW
     CA -->|"uses"| FDXW
     US & CA -->|"embed"| KERNEL
@@ -73,7 +73,7 @@ graph TD
 
 ```rust
 pub struct CaProfile {
-    version: String,   // BANK8_OPEN_CA_VERSION, default "6.5"
+    version: String,   // OPENFIN8_CA_VERSION, default "6.5"
 }
 
 impl OpenBankingProfile for CaProfile {
@@ -147,8 +147,8 @@ locale toggles when §3.2 lands).
 
 ## 5. Data Model
 
-Schema `open_ca` - the core tables (OBARCH-1 §3), freshly migrated
-by `core::sql::migrations("open_ca")`. No fdx → open_ca data
+Schema `openfin8_ca` - the core tables (OBARCH-1 §3), freshly migrated
+by `core::sql::migrations("openfin8_ca")`. No fdx → openfin8_ca data
 migration exists unless a Canadian customer previously ran
 `bank8-fdx` as their Canadian surface - in that case the same
 schema-rename migration tooling built for the US rename
@@ -156,14 +156,14 @@ schema-rename migration tooling built for the US rename
 
 ## 6. Registration & Configuration
 
-- `service-registration.json`: service_type `bank8:open-ca`,
-  subdomain `bank8-open-ca`, Shield gates `bank8:open-ca:*` (the
+- `service-registration.json`: service_type `openfin8:ca`,
+  subdomain `openfin8-ca`, Shield gates `openfin8:ca:*` (the
   policy-set renames follow the US pattern).
-- `catalog.json`: binary `bank8-open-ca`, database env var
-  `BANK8_OPEN_CA_DATABASE_URL`.
-- Env: `BANK8_OPEN_CA_PORT`, `BANK8_OPEN_CA_DATABASE_URL`,
-  `BANK8_OPEN_CA_BASE_URL`, `BANK8_OPEN_CA_VERSION`,
-  `BANK8_OPEN_CA_STREAM_FAMILY` (default `open-ca`). Per-env
+- `catalog.json`: binary `openfin8-ca`, database env var
+  `OPENFIN8_CA_DATABASE_URL`.
+- Env: `OPENFIN8_CA_PORT`, `OPENFIN8_CA_DATABASE_URL`,
+  `OPENFIN8_CA_BASE_URL`, `OPENFIN8_CA_VERSION`,
+  `OPENFIN8_CA_STREAM_FAMILY` (default `open-ca`). Per-env
   overrides via `sys.services.config` as in OBARCH-1 §6.
 
 ## 7. Spec Publication (OBARCH-2)
@@ -202,5 +202,5 @@ drive it.
 
 ---
 
-**Architecture & Design:** bank8:open-ca and its underlying concepts were
+**Architecture & Design:** openfin8:ca and its underlying concepts were
 designed by [Hamid Jahanzad](https://www.linkedin.com/in/hamidjahanzad/).

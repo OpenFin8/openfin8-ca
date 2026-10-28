@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "bank8-open-ca",
-    "description": "Sentin8 Bank8:OpenCA - CA open-banking data provider (FDX v6.x wire): consent-checked data sharing, the in-place successor of bank8-fdx.",
+    "title": "openfin8-ca",
+    "description": "Sentin8 OpenFin8:CA - CA open-banking data provider (FDX v6.x wire): consent-checked data sharing, the in-place successor of bank8-fdx.",
     "license": {
       "name": "MIT OR Apache-2.0",
       "identifier": "MIT OR Apache-2.0"
@@ -1255,7 +1255,7 @@
         "tags": [
           "open-banking"
         ],
-        "summary": "`POST /v1/recipient/consents/start` - start consent authorization.\nThe two-ledger recipient flow (bank8-open-ca DESIGN.md \u00a71 + \u00a74 consent-flow\nsequence): the recipient-side open-banking instance writes its OWN registry\n(a `pending` row in `recipient_consents`, in the recipient tenant),\nensures its per-provider OAuth client exists at the provider's\nauthorization server (DCR, cached in `open_ca.recipients`), and pushes a\nPAR request whose `state` carries `\"<consent handle>|<app origin>\"`.\nThe AS's authorize screen runs the ceremony; the browser redirect\ncomes back to THIS instance's `/fdx/consents/callback` (the\nregistered redirect_uri), which activates the row and exchanges the\ncode. The provider's grant row is seeded by the provider's OWN\nauth-family consumer from `sentin8:auth:grant:created` - never by\nthis side.",
+        "summary": "`POST /v1/recipient/consents/start` - start consent authorization.\nThe two-ledger recipient flow (openfin8-ca DESIGN.md \u00a71 + \u00a74 consent-flow\nsequence): the recipient-side open-banking instance writes its OWN registry\n(a `pending` row in `recipient_consents`, in the recipient tenant),\nensures its per-provider OAuth client exists at the provider's\nauthorization server (DCR, cached in `openfin8_ca.recipients`), and pushes a\nPAR request whose `state` carries `\"<consent handle>|<app origin>\"`.\nThe AS's authorize screen runs the ceremony; the browser redirect\ncomes back to THIS instance's `/fdx/consents/callback` (the\nregistered redirect_uri), which activates the row and exchanges the\ncode. The provider's grant row is seeded by the provider's OWN\nauth-family consumer from `sentin8:auth:grant:created` - never by\nthis side.",
         "operationId": "start_consent",
         "requestBody": {
           "content": {
@@ -4735,8 +4735,8 @@
       "description": "Shield policy administration (shared surface)"
     },
     {
-      "name": "open-ca",
-      "description": "Bank8:OpenCA - open banking, FDX v6.5 provider/recipient"
+      "name": "openfin8-ca",
+      "description": "OpenFin8:CA - open banking, FDX v6.5 provider/recipient"
     }
   ]
 }

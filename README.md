@@ -1,4 +1,4 @@
-# Bank8:OpenCA - README
+# OpenFin8:CA - README
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Built with Rust](https://img.shields.io/badge/Built%20with%20Rust-orange.svg)](https://www.rust-lang.org/)
@@ -13,11 +13,11 @@ consumer-driven-banking adapter over the shared FDX wire.
 
 ## Summary
 
-Bank8:OpenCA is a Rust service that plays the FDX **data provider**
+OpenFin8:CA is a Rust service that plays the FDX **data provider**
 role for the Canadian consumer-driven-banking market: it serves
 consented account/transaction/
 statement data to registered recipients over the `/fdx/v{major}/*`
-API (the major segment from the configured `BANK8_OPEN_CA_VERSION`),
+API (the major segment from the configured `OPENFIN8_CA_VERSION`),
 enforces consent on every request with CSDF data minimization, and
 serves the recipient-side surfaces (`/v1/recipient/*`) used by
 eFinTech-style apps and the platform-hosted consent RFW screens.
@@ -27,7 +27,7 @@ server (DCR, RFC 7591), and each institution keeps its own consent
 records - the bank its grant ledger, the fintech its connection
 registry (the two-ledger model).
 
-The service embeds [`bank8-open-core`](../bank8-open-core) - the
+The service embeds [`openfin8-core`](../openfin8-core) - the
 jurisdiction-agnostic kernel (OBARCH-1) - and supplies the Canadian
 FDX/CDX profile over the shared FDX wire (`core::wire::fdx`) and
 the FDX ceremony (DCR + PAR + PKCE + DPoP), with its own version
@@ -57,13 +57,13 @@ under gitignored `specs/fdx/{version}/` (see
 
 ```mermaid
 graph TD
-    subgraph "bank8-open-ca"
+    subgraph "openfin8-ca"
         PROF["UsProfile<br/>(FDX 6.x descriptor)"]
         CER["FDX Ceremony impl<br/>(DCR + PAR + PKCE + DPoP)"]
         WIRE["FDX provider router<br/>/fdx/v6/*"]
         REG["CA registration data<br/>(policy sets, gates)"]
     end
-    CORE["bank8-open-core<br/>(consent ledger · registry · CSDF · notify)"]
+    CORE["openfin8-core<br/>(consent ledger · registry · CSDF · notify)"]
     AUTH["Sentin8:Auth<br/>(DPoP profile)"]
     LEDGER["Bank8:Ledger"]
     PAY["Bank8:Payments"]
@@ -94,7 +94,7 @@ make build    # cargo build
 make test     # cargo test
 make lint     # cargo fmt -- --check
 make start    # infra + trimmed boot if captain is down
-make status   # fleet rows for bank8:open-ca
+make status   # fleet rows for openfin8:ca
 make enroll   # register this repo (composable enrollment, RS §6)
 ```
 
@@ -105,5 +105,5 @@ model is platform-wide - read [SECURITY.md](SECURITY.md).
 
 ---
 
-**Architecture & Design:** bank8:open-ca and its underlying concepts
+**Architecture & Design:** openfin8:ca and its underlying concepts
 were designed by [Hamid Jahanzad](https://www.linkedin.com/in/hamidjahanzad/).
