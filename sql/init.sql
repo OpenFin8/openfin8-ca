@@ -509,7 +509,7 @@ CREATE POLICY audit_journal_dml ON openfin8_ca.audit_journal
     WITH CHECK (sentin8_context_initialized() AND env_id = sentin8_current_env_id());
 
 -- ── Per-service role grants + search_path (F1 - §4.3e) ──────────────────
--- The openfin8-ca service connects via its own PostgreSQL role (bank8_openfin8_ca_service,
+-- The openfin8-ca service connects via its own PostgreSQL role (openfin8_ca_service,
 -- created + granted by `sentin8-cli vertical init/enroll` from this
 -- service's --print-registration --section=pg_roles). RLS only ENFORCES
 -- when the service does NOT bypass it. These grants give the role table
@@ -520,10 +520,10 @@ CREATE POLICY audit_journal_dml ON openfin8_ca.audit_journal
 -- `vertical enroll` never-clobber block preserves this role-level setting.
 DO $$
 BEGIN
-    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'bank8_openfin8_ca_service') THEN
-        ALTER ROLE bank8_openfin8_ca_service SET search_path = openfin8_ca, public;
-        GRANT USAGE ON SCHEMA openfin8_ca TO bank8_openfin8_ca_service;
-        GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA openfin8_ca TO bank8_openfin8_ca_service;
-        GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA openfin8_ca TO bank8_openfin8_ca_service;
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'openfin8_ca_service') THEN
+        ALTER ROLE openfin8_ca_service SET search_path = openfin8_ca, public;
+        GRANT USAGE ON SCHEMA openfin8_ca TO openfin8_ca_service;
+        GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA openfin8_ca TO openfin8_ca_service;
+        GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA openfin8_ca TO openfin8_ca_service;
     END IF;
 END $$;

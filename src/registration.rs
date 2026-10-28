@@ -266,12 +266,12 @@ const SQL_1_INIT: &str = include_str!("../sql/init.sql");
 // strips the table's RLS (and any policies) idempotently; the v1 init.sql
 // carries the same convergent statements for fresh clusters.
 const SQL_2_PROVIDER_CATALOG_NO_RLS: &str = r#"
-ALTER TABLE fdx.provider_profiles NO FORCE ROW LEVEL SECURITY;
-ALTER TABLE fdx.provider_profiles DISABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS provider_profiles_select ON fdx.provider_profiles;
-DROP POLICY IF EXISTS provider_profiles_insert ON fdx.provider_profiles;
-DROP POLICY IF EXISTS provider_profiles_update ON fdx.provider_profiles;
-DROP POLICY IF EXISTS provider_profiles_delete ON fdx.provider_profiles;
+ALTER TABLE openfin8_ca.provider_profiles NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE openfin8_ca.provider_profiles DISABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS provider_profiles_select ON openfin8_ca.provider_profiles;
+DROP POLICY IF EXISTS provider_profiles_insert ON openfin8_ca.provider_profiles;
+DROP POLICY IF EXISTS provider_profiles_update ON openfin8_ca.provider_profiles;
+DROP POLICY IF EXISTS provider_profiles_delete ON openfin8_ca.provider_profiles;
 "#;
 
 const AUDIT_FINDINGS: &[AuditFinding] = &[
