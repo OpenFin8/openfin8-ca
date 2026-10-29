@@ -5,7 +5,7 @@
 
 //! Sentin8 OpenFin8:CA - Canadian open banking: the Canadian
 //! consumer-driven-banking profile of the FDX v6.x provider/recipient
-//! wire. See `DESIGN.md` (OBARCH-4).
+//! wire. See `DESIGN.md`).
 //!
 //! This is a THIN COUNTRY ADAPTER (the design's no-fork guarantee):
 //! the entire implementation - consent ledger, recipient registry,
@@ -17,7 +17,7 @@
 //! version from `OPENFIN8_CA_VERSION`), its registration data
 //! (`registration.rs`), and its published-spec policy (`openapi.rs` -
 //! OpenFin8-owned routes only; the FDX API specification is licensed and
-//! never published here, OBARCH-2).
+//! never published here,).
 
 use utoipa::OpenApi;
 

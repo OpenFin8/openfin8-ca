@@ -3,7 +3,7 @@
 // SPDX-FileCopyrightText: Copyright Contributors to the Bank8:OpenUS
 // SPDX-License-Identifier: Apache-2.0
 
-//! OpenAPI publication drift guard (OBARCH-2).
+//! OpenAPI publication drift guard.
 //!
 //! Two invariants:
 //! 1. The published spec exists and carries the bank8-owned

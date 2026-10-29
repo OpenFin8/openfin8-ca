@@ -1,12 +1,10 @@
 # openfin8-ca - Detailed Design Document
 
-> Status: **PROPOSED** - the open-banking data provider for Canada
-> (OBARCH-4). Canada's consumer-driven banking framework (Department
-> of Finance policy statements, 2024 framework targeting 2026
-> implementation) rides the **FDX API profile** - the same wire family
-> as the US service. This document defines the Canadian profile as a
-> thin variant of `bank8-open-us`, not a fork. Depends on:
-> `openfin8-core` (OBARCH-1). Read `bank8-open-us.DESIGN.md` first -
+> The open-banking data provider for Canada. Canada's
+> consumer-driven banking framework rides the **FDX API profile** -
+> the same wire family as the US service. This document defines the
+> Canadian profile as a thin variant of `openfin8-us`, not a fork.
+> Depends on: `openfin8-core`. Read `openfin8-us/DESIGN.md` first -
 > this document defines only the deltas.
 
 ## 1. Scope & Context
@@ -32,7 +30,7 @@ reasons, even though the wire is identical:
 2. **Independent enablement** - a bank running both markets enables
    `bank8:open-us` and `openfin8:ca` independently per
    environment through `sys.services` (the platform mechanism,
-   OBARCH-1 §6); one binary with a runtime flag would couple
+   ); one binary with a runtime flag would couple
    upgrades and blast radius.
 3. **Regulatory posture** - the Canadian consumer-driven banking
    regime will arrive with its own certification/conformance
@@ -147,7 +145,7 @@ locale toggles when §3.2 lands).
 
 ## 5. Data Model
 
-Schema `openfin8_ca` - the core tables (OBARCH-1 §3), freshly migrated
+Schema `openfin8_ca` - the core tables, freshly migrated
 by `core::sql::migrations("openfin8_ca")`. No fdx → openfin8_ca data
 migration exists unless a Canadian customer previously ran
 `bank8-fdx` as their Canadian surface - in that case the same
@@ -164,9 +162,9 @@ schema-rename migration tooling built for the US rename
 - Env: `OPENFIN8_CA_PORT`, `OPENFIN8_CA_DATABASE_URL`,
   `OPENFIN8_CA_BASE_URL`, `OPENFIN8_CA_VERSION`,
   `OPENFIN8_CA_STREAM_FAMILY` (default `open-ca`). Per-env
-  overrides via `sys.services.config` as in OBARCH-1 §6.
+  overrides via `sys.services.config` as in 
 
-## 7. Spec Publication (OBARCH-2)
+## 7. Spec Publication
 
 Same policy as the US: `CustomerSupplied`. The FDX API License
 covers the Canadian profile as published by FDX - the spec is never
@@ -178,7 +176,7 @@ FDX-derived schema names in the published bank8-owned spec.
 
 ## 8. Failure Modes / Invariants / Testing
 
-Inherited wholesale from OBARCH-1 §8 and `bank8-open-us` §8 - the
+Inherited wholesale from  and `bank8-open-us` §8 - the
 same invariants (consent chokepoint, terminal revocation, secret
 references, tenant discipline, profile isolation). Testing: the CA
 adapter reuses the shared FDX wire integration tests with the CA

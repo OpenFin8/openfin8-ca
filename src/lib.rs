@@ -5,7 +5,7 @@
 
 //! Library target for the openfin8-ca adapter: the registration and
 //! spec modules for the Canadian profile. The implementation itself
-//! lives in `openfin8-core` (shared with openfin8-us - OBARCH-4);
+//! lives in `openfin8-core` (shared with openfin8-us -);
 //! integration tests run from the core crate.
 
 pub mod openapi;

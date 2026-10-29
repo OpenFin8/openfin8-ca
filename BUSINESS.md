@@ -2,7 +2,7 @@
 
 > Audience: product owners, business analysts, and anyone evaluating what
 > the Canadian adapter **does for the business**. For architecture read
-> `README.md`; for wire-level detail read `DESIGN.md` (OBARCH-4).
+> `README.md`; for wire-level detail read `DESIGN.md`.
 
 ## 1. Business Purpose
 
