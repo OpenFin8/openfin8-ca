@@ -32,8 +32,8 @@ jurisdiction-agnostic kernel - and supplies the Canadian
 FDX/CDX profile over the shared FDX wire (`core::wire::fdx`) and
 the FDX ceremony (DCR + PAR + PKCE + DPoP), with its own version
 cadence and enablement. The US and UK adapters
-([`bank8-open-us`](https://github.com/OpenFin8/openfin8-us), [`bank8-open-uk`](https://github.com/OpenFin8/openfin8-uk))
-follow the same contract.
+([`openfin8-us`](https://github.com/OpenFin8/openfin8-us),
+[`openfin8-uk`](https://github.com/OpenFin8/openfin8-uk)) follow the same contract.
 
 ## Motivation
 

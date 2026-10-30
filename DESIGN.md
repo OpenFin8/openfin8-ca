@@ -15,7 +15,7 @@ wire surface for Canadian banks - consent-checked data sharing over
 `/fdx/v{major}/*` with the Canadian profile's versions, cluster
 vocabulary, and regulatory framing. It embeds `openfin8-core` with
 a Canadian profile descriptor; the wire handlers are the **FDX
-handlers shared with `bank8-open-us`** via the core crate's FDX wire
+handlers shared with `openfin8-us`** via the core crate's FDX wire
 module (the first and only place where two adapters share a wire
 implementation - see §2).
 
@@ -60,7 +60,7 @@ graph TD
         KERNEL["consent/recipient/csdf/notify/admin<br/>(jurisdiction-agnostic)"]
         FDXW["wire::fdx<br/>(FDX handlers + route contract + ceremony)"]
     end
-    US["bank8-open-us<br/>UsProfile(FDX, v6.x)"]
+    US["openfin8-us<br/>UsProfile(FDX, v6.x)"]
     CA["openfin8-ca<br/>CaProfile(FDX, v6.x)"]
     US -->|"uses"| FDXW
     CA -->|"uses"| FDXW
@@ -136,7 +136,7 @@ implemented ahead of the published technical requirements.
 
 ## 4. API Surface
 
-Identical families to `bank8-open-us` §4 (the shared FDX wire):
+Identical families to `openfin8-us` §4 (the shared FDX wire):
 accounts + statements + payment-networks, customers, consents,
 money movement, PIP, recurring, notification subscriptions, and
 discovery - mounted at the CA-configured version prefix. Admin pages:
@@ -150,7 +150,7 @@ by `core::sql::migrations("openfin8_ca")`. No fdx → openfin8_ca data
 migration exists unless a Canadian customer previously ran
 `bank8-fdx` as their Canadian surface - in that case the same
 schema-rename migration tooling built for the US rename
-(`bank8-open-us` §5) applies, selected by the operator.
+(`openfin8-us` §5) applies, selected by the operator.
 
 ## 6. Registration & Configuration
 
@@ -176,7 +176,7 @@ FDX-derived schema names in the published bank8-owned spec.
 
 ## 8. Failure Modes / Invariants / Testing
 
-Inherited wholesale from  and `bank8-open-us` §8 - the
+Inherited wholesale from `openfin8-us` §8 - the
 same invariants (consent chokepoint, terminal revocation, secret
 references, tenant discipline, profile isolation). Testing: the CA
 adapter reuses the shared FDX wire integration tests with the CA
