@@ -147,10 +147,9 @@ locale toggles when §3.2 lands).
 
 Schema `openfin8_ca` - the core tables, freshly migrated
 by `core::sql::migrations("openfin8_ca")`. No fdx → openfin8_ca data
-migration exists unless a Canadian customer previously ran
-`bank8-fdx` as their Canadian surface - in that case the same
-schema-rename migration tooling built for the US rename
-(`openfin8-us` §5) applies, selected by the operator.
+migration exists. (An operator-side schema-rename path, built for the
+US adapter's rollout, is available if a deployment ever needs it -
+see `openfin8-us` §5.)
 
 ## 6. Registration & Configuration
 
