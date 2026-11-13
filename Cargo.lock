@@ -3044,8 +3044,8 @@ dependencies = [
 
 [[package]]
 name = "openfin8-core"
-version = "0.1.0"
-source = "git+https://github.com/OpenFin8/openfin8-core?tag=core-sdk-v0.1.17#fdcd47cef87bc31d7267781b19a1be2b9d19cb1d"
+version = "1.0.0"
+source = "git+https://github.com/OpenFin8/openfin8-core?tag=core-sdk-v1.0.0#c3376b2c552156851148ee1e8717ac964ba17855"
 dependencies = [
  "anyhow",
  "async-trait",
